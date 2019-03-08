@@ -1,4 +1,4 @@
-import-module -Force $PSScriptRoot/core.psm1
+import-module -Force $PSScriptRoot/../core.psm1
 
 function defaultBlockIsProcess($ast) {
   # If function only has default block, rewrite so it's the process block

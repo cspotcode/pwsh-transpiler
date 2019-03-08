@@ -1,4 +1,4 @@
-import-module -Force $PSScriptRoot/core.psm1
+import-module -Force $PSScriptRoot/../core.psm1
 
 <#
  # Other transformers can be simpler if the input function has all blocks declared with at least one statement.

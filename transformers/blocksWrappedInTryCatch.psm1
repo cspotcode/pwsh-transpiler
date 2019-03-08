@@ -1,4 +1,4 @@
-import-module -Force $PSScriptRoot/core.psm1
+import-module -Force $PSScriptRoot/../core.psm1
 
 function blocksWrappedInTryCatch($ast) {
   extractBefore $ast $ast.body.beginBlock.statements[0]
