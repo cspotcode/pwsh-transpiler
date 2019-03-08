@@ -1,18 +1,21 @@
+$ErrorActionPreference = 'Stop'
+
 function foo() {
-    begin {
-        echo 'this is begin'
-    }
-    process {
-        echo 'this is process'
-    }
-    end {
-        echo 'this is end'
-    }
+    echo 'this is end'
 }
 
-import-module $PSScriptRoot/core.psm1
-import-module $PSScriptRoot/blocksWrappedInTryCatch.psm1
+import-module -Force $PSScriptRoot/core.psm1
+import-module -Force $PSScriptRoot/createEmptyBlocks.psm1
+import-module -Force $PSScriptRoot/blocksWrappedInTryCatch.psm1
+import-module -Force $PSScriptRoot/defaultBlockIsProcess.psm1
 
-$result = transform $function:foo ( get-command blocksWrappedInTryCatch )
+try {
+$result = $function:foo
+$result = transform $result ( get-command defaultBlockIsProcess )
+$result = transform $result ( get-command createEmptyBlocks )
+$result = transform $result ( get-command blocksWrappedInTryCatch )
+}catch {
+    write-host $_.scriptstacktrace
+}
 
 write-output $result.extent.text
