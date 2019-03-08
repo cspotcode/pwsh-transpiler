@@ -57,3 +57,41 @@ function extractBetween([management.automation.language.ast]$rootAst, [managemen
   $end = $afterAst.extent.startoffset - $rootOffset
   return $rootAst.extent.text.substring($start, $end - $start)
 }
+
+class ReplacingVisitor : Management.Automation.Language.AstVisitor2 {
+    ReplacingVisitor() {
+        $this.replacements = [Replacements]::new()
+    }
+    [Replacements]$replacements
+}
+
+class Replacement {
+    Replacement([Management.Automation.Language.Ast]$node, [string]$text) {
+        $this.node = $node
+        $this.text = $text
+        $this.start = $node.extent.startoffset
+    }
+    [Management.Automation.Language.Ast]$node
+    [string]$text
+    [int]$start
+}
+
+class Replacements {
+    [System.Collections.Generic.List[Replacement]]$list = [System.Collections.Generic.List[Replacement]]::new()
+    add([Management.Automation.Language.Ast]$node, [string]$text) {
+        $this.list.insert(0, [Replacement]::new($node, $text))
+    }
+    [string] apply([Management.Automation.Language.Ast]$ast) {
+        $acc = ''
+        $baseOffset = $ast.extent.startoffset
+        $sliceEnd = $ast.extent.endoffset - $baseOffset
+        foreach($r in $this.list) {
+            $sliceStart = $r.node.extent.endoffset - $baseOffset
+            $acc = $r.text + $ast.extent.text.substring($sliceStart, $sliceEnd - $sliceStart) + $acc
+            $sliceEnd = $r.node.extent.startOffset - $baseOffset
+        }
+        $sliceStart = 0
+        $acc = $ast.extent.text.substring(0, $sliceEnd) + $acc
+        return $acc
+    }
+}
