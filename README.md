@@ -3,6 +3,14 @@
 Writing PowerShell CmdLet functions the "right way" involves far too much boilerplate and manual effort.
 What if we could pre-compile our functions into a form that does all the right things without extra boilerplate?
 
+Things you can do with a transformer:
+
+* replace aliases with fully-qualified function names.
+* wrap all blocks in try-catch to throw errors predictably
+* automatically add well-known parameters and annotations
+* Make dynamicparameters easier to use
+* throw on incorrect outputtype at runtime
+
 PowerShell already gives us access to an AST, so it's straightforward to extract and recombine spans of
 code.
 
