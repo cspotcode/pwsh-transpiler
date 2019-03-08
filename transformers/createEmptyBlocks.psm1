@@ -37,6 +37,5 @@ function createEmptyBlocks($ast) {
   emitBlockOrEmptyReplacement $begin 'begin'
   emitBlockOrEmptyReplacement $process 'process'
   emitBlockOrEmptyReplacement $end 'end'
-  '}'
-  extractAfter $ast $ast.body
+  extractAfter $ast $prev
 }

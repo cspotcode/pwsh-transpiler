@@ -20,7 +20,6 @@ $result = $function:foo
 $result = transform $result ( get-command defaultBlockIsProcess )
 $result = transform $result ( get-command createEmptyBlocks )
 $result = transform $result ( get-command blocksWrappedInTryCatch )
-write-host $result.gettype()
 $result = transform $result ( get-command expandAliases )
 
 write-output $result.extent.text
