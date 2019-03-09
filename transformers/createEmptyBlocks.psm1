@@ -20,7 +20,7 @@ function createEmptyBlocks($ast) {
   function emitBlockOrEmptyReplacement($block, $name) {
     if($block) {
       if(-not $prev) {
-        (extractBefore $ast.body $block).substring(1)
+        extractBetween $ast $ast.body.paramblock $block
       } else {
         extractBetween $ast $prev $block
       }
@@ -32,7 +32,7 @@ function createEmptyBlocks($ast) {
   }
 
   extractBefore $ast $ast.body
-  '{'
+  extractSpan $ast $ast.body $ast.body.paramblock
   emitBlockOrEmptyReplacement $dynamic 'dynamicparam'
   emitBlockOrEmptyReplacement $begin 'begin'
   emitBlockOrEmptyReplacement $process 'process'

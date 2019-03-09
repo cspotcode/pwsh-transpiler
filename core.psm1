@@ -38,6 +38,12 @@ function extractBlockStatements([Management.automation.language.NamedBlockAst]$b
   $end = $blockAst.statements[-1].extent.endoffset - $rootOffset
   return $blockAst.extent.text.substring($start, $end - $start)
 }
+function extractSpan([Management.automation.language.Ast]$rootAst, [Management.automation.language.Ast]$beginAst, [Management.automation.language.Ast]$endAst) {
+  $rootOffset = $rootAst.extent.startoffset
+  $start = $beginAst.extent.startoffset - $rootOffset
+  $end = $endAst.extent.endoffset - $rootOffset
+  return $rootAst.extent.text.substring($start, $end - $start)
+}
 
 function extractBefore([management.automation.language.ast]$rootAst, [management.automation.language.ast]$beforeAst) {
   $rootOffset = $rootAst.extent.startoffset

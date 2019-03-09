@@ -1,24 +1,45 @@
 param($parentInvocation)
 
+$transformers = @(
+    # Catch early limitations
+    'validate',
+
+    # Normalize syntax; makes subsequent transformers easier to write because
+    # they don't have to deal with as many corner-cases
+    'parametersToParamBlock',
+    'defaultBlockIsProcess',
+    'createEmptyBlocks',
+
+    # Additional transformations and behaviors
+    'blocksWrappedInTryCatch',
+    'expandAliases'
+)
+
 pushd $PSScriptRoot
-try {
-    import-module -Force $PSScriptRoot/core.psm1
-    import-module -Force $PSScriptRoot/transformers/createEmptyBlocks.psm1
-    import-module -Force $PSScriptRoot/transformers/blocksWrappedInTryCatch.psm1
-    import-module -Force $PSScriptRoot/transformers/defaultBlockIsProcess.psm1
-    import-module -Force $PSScriptRoot/transformers/expandAliases.psm1
-} finally {
-    popd
+$transformerFunctions = . {
+    try {
+        foreach($t in $transformers) {
+            import-module -Force $PSScriptRoot/transformers/$t.psm1
+            get-command $t
+        }
+    } finally {
+        popd
+    }
 }
 
 # A default stack of transformations
 # TODO allow modules to pass a custom stack
 function __transform($cmd) {
     $result = $cmd.scriptblock
-    $result = transform $result ( get-command defaultBlockIsProcess )
-    $result = transform $result ( get-command createEmptyBlocks )
-    $result = transform $result ( get-command blocksWrappedInTryCatch )
-    $result = transform $result ( get-command expandAliases )
+    foreach($transformer in $transformerFunctions) {
+        write-host "Applying transformation $transformer"
+        try {
+            $result = transform $result $transformer
+        } catch {
+            throw $_
+        }
+        write-host $result
+    }
     $result
 }
 

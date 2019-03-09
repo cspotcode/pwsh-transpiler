@@ -13,9 +13,10 @@
  #>
 
 # We want this function to be transformed
-function sampleStreamProcessor {
+function sampleStreamProcessor([parameter(valuefrompipeline)]$_) {
     # Default block is process block
     Write-Host "Got pipeline item: $_"
+    # throw 'error'
 }
 
 # Perform transformation
