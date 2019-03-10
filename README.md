@@ -4,6 +4,7 @@ Writing PowerShell CmdLet functions the "right way" involves far too much boiler
 What if we could pre-compile our functions into a form that does all the right things without extra boilerplate?
 
 Inspired by discussion on https://github.com/PowerShell/PowerShell/issues/8819 and https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/37
+See also: https://github.com/SeeminglyScience/PSSyntaxRewriter/
 
 ## Quick-start
 
