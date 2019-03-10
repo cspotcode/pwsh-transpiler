@@ -1,7 +1,11 @@
 import-module -Force $PSScriptRoot/../core.psm1
 
 function defaultBlockIsProcess($ast) {
-  # If function only has default block, rewrite so it's the process block
+  <#
+  .SYNOPSIS
+  If function does not have any explicitly-declared blocks, rewrite so it's the `process` block.
+  #>
+
   if(-not $ast.body.beginblock -and -not $ast.body.processblock -and $ast.body.endBlock.unnamed) {
     write-host 'rewriting'
     $endBlock = $ast.body.endBlock

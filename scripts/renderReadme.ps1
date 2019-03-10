@@ -1,0 +1,1 @@
+& $PSScriptRoot/template.ps1 -Path ./README.md -InPlace

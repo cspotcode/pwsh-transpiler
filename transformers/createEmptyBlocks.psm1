@@ -1,8 +1,9 @@
 import-module -Force $PSScriptRoot/../core.psm1
 
 <#
- # Other transformers can be simpler if the input function has all blocks declared with at least one statement.
- # This is not ideal, but during prototyping, it's helpful.
+.SYNOPSIS
+Other transformers can be simpler if the input function has all blocks declared with at least one statement.
+This is not ideal, but it helps us prototype transformers quickly.
  #>
 function createEmptyBlocks($ast) {
   $dynamic = $ast.body.DynamicParamBlock

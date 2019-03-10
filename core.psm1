@@ -1,4 +1,7 @@
-# Simple source-to-source transformer for PowerShell functions
+<#
+Core functions to enable transformation: code extractors, slicers, converting
+transformer output into a fresh AST.
+#>
 
 function transform($fn, $transformer) {
     $result = & $transformer (normalizeToFunctionAst $fn)
@@ -100,4 +103,22 @@ class Replacements {
         $acc = $ast.extent.text.substring(0, $sliceEnd) + $acc
         return $acc
     }
+}
+
+function wrapBlocks($ast, [string]$before, [string]$after) {
+  # This wrapper is lifted from https://github.com/PoshCode/PowerShellPracticeAndStyle/issues/37#issuecomment-338117653
+  # There are pros and cons to this approach; we should eventually pick something better, since we can afford the complexity.
+  extractBefore $ast $ast.body.beginBlock.statements[0]
+  $before
+  extractBlockStatements $ast.body.beginBlock
+  $after
+  extractBetween $ast $ast.body.beginBlock.statements[-1] $ast.body.processBlock.statements[0]
+  $before
+  extractBlockStatements $ast.body.processBlock
+  $after
+  extractBetween $ast $ast.body.processBlock.statements[-1] $ast.body.endBlock.statements[0]
+  $before
+  extractBlockStatements $ast.body.endBlock
+  $after
+  extractAfter $ast $ast.body.endBlock.statements[-1]
 }

@@ -11,6 +11,7 @@ $transformers = @(
     'createEmptyBlocks',
 
     # Additional transformations and behaviors
+    'swallowBreaks',
     'blocksWrappedInTryCatch',
     'expandAliases'
 )

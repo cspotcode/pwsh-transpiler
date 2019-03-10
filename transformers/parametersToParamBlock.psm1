@@ -1,9 +1,13 @@
 import-module -Force $PSScriptRoot/../core.psm1
 
-<#
- # Convert `function foo($a) {}` into `function {[cmdletbinding()]param($a)}`
- #>
 function parametersToParamBlock($ast) {
+    <#
+    .SYNOPSIS
+    Move params into a param() block and add [cmdletbinding()]
+
+    Convert `function foo($a) {}` into `function {[cmdletbinding()]param($a)}`
+    #>
+
     if(-not $ast.body.paramblock) {
         if($ast.parameters) {
             $paramBlockContent = $ast.parameters

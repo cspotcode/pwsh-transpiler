@@ -12,6 +12,10 @@ class Visitor : ReplacingVisitor {
 }
 
 function expandAliases([Management.Automation.Language.FunctionDefinitionAst]$ast) {
+    <#
+    .SYNOPSIS
+    Expand any alias invocations with the module-qualified command name.
+    #>
     $visitor = [Visitor]::new()
     $ast.visit($visitor)
     return $visitor.replacements.apply($ast)
