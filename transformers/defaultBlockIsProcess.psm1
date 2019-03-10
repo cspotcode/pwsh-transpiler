@@ -7,7 +7,6 @@ function defaultBlockIsProcess($ast) {
   #>
 
   if(-not $ast.body.beginblock -and -not $ast.body.processblock -and $ast.body.endBlock.unnamed) {
-    write-host 'rewriting'
     $endBlock = $ast.body.endBlock
     $param = $ast.body.paramblock
     $paramFirstAttribute = $param.attributes[0]
