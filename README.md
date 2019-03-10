@@ -1,4 +1,4 @@
-# Experimental source-to-source code transformer for PowerShell functions.
+# Experimental source-to-source code transformer for PowerShell modules.
 
 Writing PowerShell CmdLet functions the "right way" involves far too much boilerplate and manual effort.
 What if we could pre-compile our functions into a form that does all the right things without extra boilerplate?

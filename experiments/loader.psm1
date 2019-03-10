@@ -53,7 +53,7 @@ pushd "$PSScriptRoot/.."
 try {
     $transformerFunctions = . {
         foreach($t in $transformers) {
-            import-module -Force ./transformers/$t.psm1
+            import-module -force ./transformers/$t.psm1
             get-command $t
         }
     }
